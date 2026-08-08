@@ -902,21 +902,39 @@
                   <div class="glass-card" style="text-align: center; padding: 40px 20px;">
                     <p style="font-size: 15px; font-weight: 700; color: #64748b; margin: 0;">No learning modules are available.</p>
                   </div>
-                ` : videos.map((vid, idx) => `
-                  <div class="glass-card" onclick="openVideoDetail(${JSON.stringify(vid).replace(/"/g, '&quot;')})" style="margin-bottom: 0; padding: 22px; cursor: pointer; display: flex; align-items: center; gap: 18px; transition: all 0.2s ease;">
-                    <div style="width: 56px; height: 56px; border-radius: 18px; background: rgba(64, 217, 191, 0.15); color: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                ` : videos.map((vid, idx) => {
+                  const isDone = vid.is_completed == 1 || vid.is_completed === true || vid.completed == 1 || vid.completed === true;
+                  return `
+                    <div class="glass-card" onclick="openVideoDetail(${JSON.stringify(vid).replace(/"/g, '&quot;')})" style="margin-bottom: 0; padding: 22px; cursor: pointer; display: flex; align-items: center; gap: 18px; transition: all 0.2s ease;">
+                      <div style="width: 56px; height: 56px; border-radius: 18px; background: ${isDone ? 'rgba(64, 217, 191, 0.2)' : 'rgba(89, 115, 242, 0.15)'}; color: ${isDone ? 'var(--accent)' : 'var(--primary)'}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        ${isDone ? `
+                          <span style="font-size: 24px; font-weight: 900; color: #30c896;">✓</span>
+                        ` : `
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        `}
+                      </div>
+                      <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+                          <span style="font-size: 10px; font-weight: 900; color: var(--primary); letter-spacing: 1px; text-transform: uppercase;">Module ${idx + 1}</span>
+                          ${isDone ? `
+                            <span style="background: rgba(48, 200, 150, 0.15); color: #20a075; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">COMPLETED</span>
+                          ` : ''}
+                        </div>
+                        <h3 style="font-size: 17px; font-weight: 800; color: var(--navy-text); margin-top: 2px;">${vid.title}</h3>
+                        <p style="font-size: 13px; font-weight: 500; color: #66778e; margin-top: 4px;">${vid.description || 'Interactive pedagogical teaching video'}</p>
+                      </div>
+                      ${isDone ? `
+                        <div style="padding: 8px 16px; border-radius: 20px; background: rgba(48, 200, 150, 0.15); color: #20a075; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(48, 200, 150, 0.3);">
+                          ✓ Completed
+                        </div>
+                      ` : `
+                        <button class="primary-btn accent-bg" style="padding: 8px 18px; font-size: 13px; width: auto;">
+                          Watch Now →
+                        </button>
+                      `}
                     </div>
-                    <div style="flex: 1;">
-                      <span style="font-size: 10px; font-weight: 900; color: var(--primary); letter-spacing: 1px; text-transform: uppercase;">Module ${idx + 1}</span>
-                      <h3 style="font-size: 17px; font-weight: 800; color: var(--navy-text); margin-top: 2px;">${vid.title}</h3>
-                      <p style="font-size: 13px; font-weight: 500; color: #66778e; margin-top: 4px;">${vid.description || 'Interactive pedagogical teaching video'}</p>
-                    </div>
-                    <button class="primary-btn accent-bg" style="padding: 8px 18px; font-size: 13px; width: auto;">
-                      Watch Now →
-                    </button>
-                  </div>
-                `).join('')}
+                  `;
+                }).join('')}
               </div>
 
               <div style="display: flex; flex-direction: column; gap: 18px;">

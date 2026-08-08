@@ -5,6 +5,7 @@ struct FinalSummaryView: View {
     @EnvironmentObject private var session: AppSession
     @StateObject private var viewModel = SummaryViewModel()
     @State private var showLogoutAlert  = false
+    @State private var navigateToDashboard = false
 
     // Premium Colors
     private let mintGreen = Color(red: 0.35, green: 0.8, blue: 0.65)
@@ -27,7 +28,7 @@ struct FinalSummaryView: View {
             VStack(spacing: 0) {
                 // ── Back button row ──
                 HStack {
-                    Button { dismiss() } label: {
+                    Button { navigateToDashboard = true } label: {
                         ZStack {
                             Circle()
                                 .fill(Color.white)
@@ -197,6 +198,9 @@ struct FinalSummaryView: View {
         }
         .onAppear { viewModel.fetchSummary() }
         .navigationBarHidden(true)
+        .navigationDestination(isPresented: $navigateToDashboard) {
+            UserDashboardView()
+        }
         .alert("Sign Out", isPresented: $showLogoutAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Sign Out", role: .destructive) {

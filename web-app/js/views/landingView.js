@@ -22,14 +22,6 @@ export const LandingView = {
           </div>
 
           <nav class="navbar-links">
-            <div class="nav-item dropdown">
-              <span>Products</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
-            <div class="nav-item dropdown">
-              <span>Company</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </div>
             <a href="#" class="nav-item" onclick="alert('Pinsight Educator Plan: Free for Institutions'); return false;">Pricing</a>
             <a href="#" class="nav-item" onclick="AppState.navigate('signin'); return false;">For Educators</a>
           </nav>

@@ -320,8 +320,6 @@
               <span class="logo-text">pinsight</span>
             </div>
             <nav class="navbar-links">
-              <div class="nav-item dropdown"><span>Products</span></div>
-              <div class="nav-item dropdown"><span>Company</span></div>
               <a href="#" class="nav-item" onclick="alert('Pinsight Educator Plan: Free for Institutions'); return false;">Pricing</a>
               <a href="#" class="nav-item" onclick="AppState.navigate('userType'); return false;">For Educators</a>
             </nav>

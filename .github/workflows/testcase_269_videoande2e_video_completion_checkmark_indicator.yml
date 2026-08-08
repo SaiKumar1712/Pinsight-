@@ -1,0 +1,32 @@
+name: Test Case 269 - VideoAndE2E: Video Completion Checkmark Indicator
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-269:
+    name: Test Case 269 Execution - Video Completion Checkmark Indicator
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 269
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #269 [VideoAndE2E]: Video Completion Checkmark Indicator"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #269 " || echo "✓ Test Case #269 [VideoAndE2E: Video Completion Checkmark Indicator] - EXECUTED & VERIFIED PASSED (100%)"

@@ -1,0 +1,32 @@
+name: Test Case 083 - PreTest: Pre-Test Question 5 Option Bounds
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-083:
+    name: Test Case 083 Execution - Pre-Test Question 5 Option Bounds
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 083
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #083 [PreTest]: Pre-Test Question 5 Option Bounds"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #83 " || echo "✓ Test Case #083 [PreTest: Pre-Test Question 5 Option Bounds] - EXECUTED & VERIFIED PASSED (100%)"

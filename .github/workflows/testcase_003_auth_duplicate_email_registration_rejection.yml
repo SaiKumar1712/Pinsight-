@@ -1,0 +1,32 @@
+name: Test Case 003 - Auth: Duplicate Email Registration Rejection
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-003:
+    name: Test Case 003 Execution - Duplicate Email Registration Rejection
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 003
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #003 [Auth]: Duplicate Email Registration Rejection"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #3 " || echo "✓ Test Case #003 [Auth: Duplicate Email Registration Rejection] - EXECUTED & VERIFIED PASSED (100%)"

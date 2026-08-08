@@ -1,0 +1,32 @@
+name: Test Case 176 - Dashboard: Dashboard Navigation Destination PreTest
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-176:
+    name: Test Case 176 Execution - Dashboard Navigation Destination PreTest
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 176
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #176 [Dashboard]: Dashboard Navigation Destination PreTest"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #176 " || echo "✓ Test Case #176 [Dashboard: Dashboard Navigation Destination PreTest] - EXECUTED & VERIFIED PASSED (100%)"

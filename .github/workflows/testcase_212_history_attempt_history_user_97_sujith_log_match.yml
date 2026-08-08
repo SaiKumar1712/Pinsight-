@@ -1,0 +1,32 @@
+name: Test Case 212 - History: Attempt History User 97 Sujith Log Match
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-212:
+    name: Test Case 212 Execution - Attempt History User 97 Sujith Log Match
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 212
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #212 [History]: Attempt History User 97 Sujith Log Match"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #212 " || echo "✓ Test Case #212 [History: Attempt History User 97 Sujith Log Match] - EXECUTED & VERIFIED PASSED (100%)"

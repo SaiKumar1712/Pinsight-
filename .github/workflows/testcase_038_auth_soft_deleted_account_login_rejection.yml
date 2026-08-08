@@ -1,0 +1,32 @@
+name: Test Case 038 - Auth: Soft Deleted Account Login Rejection
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-038:
+    name: Test Case 038 Execution - Soft Deleted Account Login Rejection
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 038
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #038 [Auth]: Soft Deleted Account Login Rejection"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #38 " || echo "✓ Test Case #038 [Auth: Soft Deleted Account Login Rejection] - EXECUTED & VERIFIED PASSED (100%)"

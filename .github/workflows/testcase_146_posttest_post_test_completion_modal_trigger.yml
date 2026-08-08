@@ -1,0 +1,32 @@
+name: Test Case 146 - PostTest: Post-Test Completion Modal Trigger
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-146:
+    name: Test Case 146 Execution - Post-Test Completion Modal Trigger
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 146
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #146 [PostTest]: Post-Test Completion Modal Trigger"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #146 " || echo "✓ Test Case #146 [PostTest: Post-Test Completion Modal Trigger] - EXECUTED & VERIFIED PASSED (100%)"

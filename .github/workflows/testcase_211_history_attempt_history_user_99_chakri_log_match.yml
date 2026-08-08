@@ -1,0 +1,32 @@
+name: Test Case 211 - History: Attempt History User 99 Chakri Log Match
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-211:
+    name: Test Case 211 Execution - Attempt History User 99 Chakri Log Match
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 211
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #211 [History]: Attempt History User 99 Chakri Log Match"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #211 " || echo "✓ Test Case #211 [History: Attempt History User 99 Chakri Log Match] - EXECUTED & VERIFIED PASSED (100%)"

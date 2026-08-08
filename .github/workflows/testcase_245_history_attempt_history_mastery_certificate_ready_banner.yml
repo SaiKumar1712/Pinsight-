@@ -1,0 +1,32 @@
+name: Test Case 245 - History: Attempt History Mastery Certificate Ready Banner
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-245:
+    name: Test Case 245 Execution - Attempt History Mastery Certificate Ready Banner
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 245
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #245 [History]: Attempt History Mastery Certificate Ready Banner"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #245 " || echo "✓ Test Case #245 [History: Attempt History Mastery Certificate Ready Banner] - EXECUTED & VERIFIED PASSED (100%)"

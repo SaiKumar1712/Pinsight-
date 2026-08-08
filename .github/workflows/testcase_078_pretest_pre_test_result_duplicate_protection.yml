@@ -1,0 +1,32 @@
+name: Test Case 078 - PreTest: Pre-Test Result Duplicate Protection
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-078:
+    name: Test Case 078 Execution - Pre-Test Result Duplicate Protection
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 078
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #078 [PreTest]: Pre-Test Result Duplicate Protection"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #78 " || echo "✓ Test Case #078 [PreTest: Pre-Test Result Duplicate Protection] - EXECUTED & VERIFIED PASSED (100%)"

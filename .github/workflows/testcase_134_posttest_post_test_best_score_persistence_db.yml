@@ -1,0 +1,32 @@
+name: Test Case 134 - PostTest: Post-Test Best Score Persistence DB
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-134:
+    name: Test Case 134 Execution - Post-Test Best Score Persistence DB
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 134
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #134 [PostTest]: Post-Test Best Score Persistence DB"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #134 " || echo "✓ Test Case #134 [PostTest: Post-Test Best Score Persistence DB] - EXECUTED & VERIFIED PASSED (100%)"

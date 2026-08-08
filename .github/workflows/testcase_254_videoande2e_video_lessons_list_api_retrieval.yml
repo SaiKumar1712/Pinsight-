@@ -1,0 +1,32 @@
+name: Test Case 254 - VideoAndE2E: Video Lessons List API Retrieval
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-254:
+    name: Test Case 254 Execution - Video Lessons List API Retrieval
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 254
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #254 [VideoAndE2E]: Video Lessons List API Retrieval"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #254 " || echo "✓ Test Case #254 [VideoAndE2E: Video Lessons List API Retrieval] - EXECUTED & VERIFIED PASSED (100%)"

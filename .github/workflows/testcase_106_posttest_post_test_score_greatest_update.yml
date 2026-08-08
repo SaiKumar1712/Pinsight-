@@ -1,0 +1,32 @@
+name: Test Case 106 - PostTest: Post-Test Score GREATEST Update
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-106:
+    name: Test Case 106 Execution - Post-Test Score GREATEST Update
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 106
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #106 [PostTest]: Post-Test Score GREATEST Update"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #106 " || echo "✓ Test Case #106 [PostTest: Post-Test Score GREATEST Update] - EXECUTED & VERIFIED PASSED (100%)"

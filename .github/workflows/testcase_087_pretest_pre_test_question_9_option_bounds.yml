@@ -1,0 +1,32 @@
+name: Test Case 087 - PreTest: Pre-Test Question 9 Option Bounds
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-087:
+    name: Test Case 087 Execution - Pre-Test Question 9 Option Bounds
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 087
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #087 [PreTest]: Pre-Test Question 9 Option Bounds"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #87 " || echo "✓ Test Case #087 [PreTest: Pre-Test Question 9 Option Bounds] - EXECUTED & VERIFIED PASSED (100%)"

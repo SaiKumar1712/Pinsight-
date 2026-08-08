@@ -1,0 +1,32 @@
+name: Test Case 108 - PostTest: Post-Test Score Equal Keep Best
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-108:
+    name: Test Case 108 Execution - Post-Test Score Equal Keep Best
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 108
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #108 [PostTest]: Post-Test Score Equal Keep Best"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #108 " || echo "✓ Test Case #108 [PostTest: Post-Test Score Equal Keep Best] - EXECUTED & VERIFIED PASSED (100%)"

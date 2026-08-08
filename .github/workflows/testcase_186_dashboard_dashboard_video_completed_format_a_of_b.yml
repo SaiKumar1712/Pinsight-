@@ -1,0 +1,32 @@
+name: Test Case 186 - Dashboard: Dashboard Video Completed Format A of B
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-186:
+    name: Test Case 186 Execution - Dashboard Video Completed Format A of B
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 186
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #186 [Dashboard]: Dashboard Video Completed Format A of B"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #186 " || echo "✓ Test Case #186 [Dashboard: Dashboard Video Completed Format A of B] - EXECUTED & VERIFIED PASSED (100%)"

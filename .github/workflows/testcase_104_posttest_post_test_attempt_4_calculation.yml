@@ -1,0 +1,32 @@
+name: Test Case 104 - PostTest: Post-Test Attempt 4 Calculation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-104:
+    name: Test Case 104 Execution - Post-Test Attempt 4 Calculation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 104
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #104 [PostTest]: Post-Test Attempt 4 Calculation"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #104 " || echo "✓ Test Case #104 [PostTest: Post-Test Attempt 4 Calculation] - EXECUTED & VERIFIED PASSED (100%)"

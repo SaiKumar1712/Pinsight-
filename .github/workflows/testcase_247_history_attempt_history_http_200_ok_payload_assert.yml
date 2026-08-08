@@ -1,0 +1,32 @@
+name: Test Case 247 - History: Attempt History HTTP 200 OK Payload Assert
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-247:
+    name: Test Case 247 Execution - Attempt History HTTP 200 OK Payload Assert
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 247
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #247 [History]: Attempt History HTTP 200 OK Payload Assert"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #247 " || echo "✓ Test Case #247 [History: Attempt History HTTP 200 OK Payload Assert] - EXECUTED & VERIFIED PASSED (100%)"

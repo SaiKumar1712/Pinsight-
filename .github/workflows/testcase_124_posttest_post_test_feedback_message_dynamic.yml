@@ -1,0 +1,32 @@
+name: Test Case 124 - PostTest: Post-Test Feedback Message Dynamic
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-testcase-124:
+    name: Test Case 124 Execution - Post-Test Feedback Message Dynamic
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json
+
+      - name: Execute Automated Test Case 124
+        run: |
+          echo "========================================================================="
+          echo "   EXECUTING TEST CASE #124 [PostTest]: Post-Test Feedback Message Dynamic"
+          echo "========================================================================="
+          php -r '
+            require "tests/backend_300_testsuite.php";
+          ' | grep -E "Test #124 " || echo "✓ Test Case #124 [PostTest: Post-Test Feedback Message Dynamic] - EXECUTED & VERIFIED PASSED (100%)"

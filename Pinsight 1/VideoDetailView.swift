@@ -7,22 +7,11 @@ struct VideoDetailView: View {
     @Environment(\.dismiss) private var dismiss
     
     @State private var rating: Int = 0
-    @State private var commentText: String = ""
     @State private var showMarkedComplete = false
     @State private var player: AVPlayer?
     @State private var timeObserverToken: Any? = nil
     @State private var hasMarkedComplete = false
     @State private var isVideoFinished = false
-    @State private var comments: [CommentData] = [
-        CommentData(user: "Admin Team", text: "Welcome to the first module! Focus on the core principles."),
-        CommentData(user: "Learning Expert", text: "Great start, the visual aids are very helpful.")
-    ]
-    
-    struct CommentData: Identifiable {
-        let id = UUID()
-        let user: String
-        let text: String
-    }
     
     var body: some View {
         ZStack {
@@ -191,45 +180,6 @@ struct VideoDetailView: View {
                         }
                         .padding(.horizontal, 24)
                         
-                        // Comments
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Student Community")
-                                .font(.system(size: 18, weight: .bold))
-                                .padding(.horizontal, 24)
-                            
-                            VStack(spacing: 15) {
-                                HStack {
-                                    TextField("Add a public comment...", text: $commentText)
-                                        .font(.system(size: 15))
-                                    
-                                    Button {
-                                        if !commentText.isEmpty {
-                                            withAnimation(.spring()) {
-                                                comments.insert(CommentData(user: "You", text: commentText), at: 0)
-                                                commentText = ""
-                                            }
-                                        }
-                                    } label: {
-                                        Image(systemName: "paperplane.fill")
-                                            .foregroundColor(commentText.isEmpty ? .gray : Color(red: 0.0, green: 0.48, blue: 1.0))
-                                            .font(.system(size: 20))
-                                    }
-                                }
-                                .padding(16)
-                                .background(Color.white)
-                                .cornerRadius(15)
-                                .padding(.horizontal, 24)
-                                .shadow(color: .black.opacity(0.02), radius: 5, y: 2)
-                                
-                                VStack(spacing: 12) {
-                                    ForEach(comments) { comment in
-                                        CommentRow(user: comment.user, text: comment.text)
-                                    }
-                                }
-                                .padding(.horizontal, 24)
-                            }
-                        }
-                        
                         Spacer(minLength: 100)
                     }
                 }
@@ -269,36 +219,6 @@ struct VideoDetailView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             withAnimation { showMarkedComplete = false }
         }
-    }
-}
-
-struct CommentRow: View {
-    let user: String
-    let text: String
-    
-    var body: some View {
-        HStack(alignment: .top, spacing: 14) {
-            Circle()
-                .fill(Color(red: 0.5, green: 0.45, blue: 0.95)) // Purple Avatar
-                .frame(width: 40, height: 40)
-                .overlay(Text(String(user.prefix(1))).foregroundColor(.white).font(.system(size: 14, weight: .bold)))
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(user)
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(Color(red: 0.1, green: 0.12, blue: 0.2))
-                
-                Text(text)
-                    .font(.system(size: 14, weight: .regular))
-                    .foregroundColor(.gray.opacity(0.9))
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            Spacer()
-        }
-        .padding(16)
-        .background(Color.white)
-        .cornerRadius(20)
-        .shadow(color: .black.opacity(0.02), radius: 5, y: 2)
     }
 }
 

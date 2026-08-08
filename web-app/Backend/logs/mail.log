@@ -1,0 +1,15 @@
+[2026-04-24 03:19:10] [LOGGED (SMTP Error: SMTP Credentials not set.)] To: test@example.com | OTP: 9999
+[2026-04-24 04:33:07] [LOGGED (SMTP Error: SMTP Credentials not set in mail_config.php.)] To: test@example.com | OTP: 7777
+[2026-04-24 04:38:11] [LOGGED (SMTP Error: SMTP Credentials not set in mail_config.php.)] To: test@example.com | OTP: 7777
+[2026-04-24 04:38:54] [LOGGED (SMTP Error: SMTP Credentials not set in mail_config.php.)] To: test@example.com | OTP: 7777
+[2026-04-24 12:17:35] [LOGGED (SMTP Error: SMTP Credentials not set in mail_config.php.)] To: yengalasai171213@gmail.com | OTP: 1639
+[2026-04-24 12:33:44] [LOGGED (SMTP Error: Connection failed: Operation timed out)] To: yengalasai171213@gmail.com | OTP: 7455
+[2026-04-24 12:36:06] [LOGGED (SMTP Error: Connection failed: Operation timed out)] To: yengalasai171213@gmail.com | OTP: 1883
+[2026-04-24 12:44:46] [LOGGED (SMTP Error: Connection failed: )] To: yengalasai171213@gmail.com | OTP: 6443
+[2026-07-30 11:40:32] [LOGGED (SMTP Error: Connection failed: )] To: yengalasai171213@gmail.com | OTP: 2061
+[2026-07-30 11:45:40] [SENT] To: yengalasai171213@gmail.com | OTP: 2994
+[2026-07-30 11:47:27] [SENT] To: yengalasai171213@gmail.com | OTP: 1652
+[2026-07-30 08:18:00] [SENT] To: yengalasai171213@gmail.com | OTP: 9988
+[2026-07-30 11:50:46] [SENT] To: yengalasai171213@gmail.com | OTP: Unknown
+[2026-07-30 11:51:47] [SENT] To: yengalasai171213@gmail.com | OTP: Unknown
+[2026-07-30 11:56:35] [SENT] To: yengalasai171213@gmail.com | OTP: Unknown

@@ -54,38 +54,6 @@ struct VideoLessonsView: View {
                                     .font(.system(size: 15, weight: .black))
                                     .foregroundColor(.gray.opacity(0.8))
                             }
-                            
-                            if completedCount == viewModel.videos.count && !viewModel.videos.isEmpty {
-                                let remaining = max(0, 4 - summaryVM.attemptsCount)
-                                let limitReached = summaryVM.attemptsCount >= 4
-
-                                Button {
-                                    if limitReached {
-                                        alertMessage = "Limit Reached! You have used all 4 attempts for the Post-Test."
-                                        showAlert = true
-                                    } else {
-                                        navigateToPosttestq = true
-                                    }
-                                } label: {
-                                    HStack(spacing: 8) {
-                                        Image(systemName: limitReached ? "lock.fill" : "lock.open.fill")
-                                            .font(.system(size: 14, weight: .bold))
-                                        Text(limitReached
-                                             ? "Post-Test Locked (0 attempts left)"
-                                             : "Unlock Post-Test (\(remaining) left)")
-                                            .font(.system(size: 16, weight: .bold))
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(limitReached ? Color.gray.opacity(0.35) : lightPurple)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(20)
-                                    .shadow(color: (limitReached ? Color.clear : lightPurple.opacity(0.3)), radius: 10, y: 5)
-                                }
-                                .disabled(limitReached)
-                                .padding(.top, 10)
-                                .transition(.move(edge: .top).combined(with: .opacity))
-                            }
                         }
                         .padding(.horizontal, 24)
                         .padding(.top, 24)

@@ -221,7 +221,7 @@ struct MiniStatsCard2: View {
     let total:       Int
     let accentColor: Color
 
-    var pct: Int { total > 0 ? (score * 100) / total : 0 }
+    var pct: Int { total > 0 ? Int((Double(score) / Double(total) * 100.0).rounded()) : 0 }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {

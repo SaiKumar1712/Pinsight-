@@ -49,7 +49,7 @@ class SummaryViewModel: ObservableObject {
         let created_at: String
         
         var percentage: Int {
-            total > 0 ? (score * 100) / total : 0
+            total > 0 ? Int((Double(score) / Double(total) * 100.0).rounded()) : 0
         }
     }
 
@@ -90,7 +90,7 @@ class SummaryViewModel: ObservableObject {
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.completed = decodeBool(from: container, key: .completed)
-            self.status = decodeString(from: container, key: .status)
+            self.status = try? container.decodeIfPresent(String.self, forKey: .status)
             self.score = decodeInt(from: container, key: .score)
             self.total = decodeInt(from: container, key: .total)
             self.done = decodeBool(from: container, key: .done)
@@ -98,47 +98,43 @@ class SummaryViewModel: ObservableObject {
     }
     
     struct VideoSummary: Codable {
-        let unlocked: Bool?
-        let status: String?
         let completed: Int?
         let total: Int?
+        let status: String?
         let done: Bool?
         
         enum CodingKeys: String, CodingKey {
-            case unlocked, status, completed, total, done
+            case completed, total, status, done
         }
         
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.unlocked = decodeBool(from: container, key: .unlocked)
-            self.status = decodeString(from: container, key: .status)
             self.completed = decodeInt(from: container, key: .completed)
             self.total = decodeInt(from: container, key: .total)
+            self.status = try? container.decodeIfPresent(String.self, forKey: .status)
             self.done = decodeBool(from: container, key: .done)
         }
     }
     
     struct PostTestSummary: Codable {
-        let unlocked: Bool?
-        let status: String?
         let attempts: Int?
+        let unlocked: Bool?
         let bestScore: Int?
-        let best_score: Int?
         let bestTotal: Int?
+        let best_score: Int?
         let done: Bool?
         
         enum CodingKeys: String, CodingKey {
-            case unlocked, status, attempts, bestScore, best_score, bestTotal, done
+            case attempts, unlocked, bestScore, bestTotal, best_score, done
         }
         
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.unlocked = decodeBool(from: container, key: .unlocked)
-            self.status = decodeString(from: container, key: .status)
             self.attempts = decodeInt(from: container, key: .attempts)
+            self.unlocked = decodeBool(from: container, key: .unlocked)
             self.bestScore = decodeInt(from: container, key: .bestScore)
-            self.best_score = decodeInt(from: container, key: .best_score)
             self.bestTotal = decodeInt(from: container, key: .bestTotal)
+            self.best_score = decodeInt(from: container, key: .best_score)
             self.done = decodeBool(from: container, key: .done)
         }
     }
@@ -184,8 +180,8 @@ class SummaryViewModel: ObservableObject {
                         let postUnlocked = post?.unlocked ?? (preDone && vidDone)
                         self.postStatus = postUnlocked ? (self.attemptsCount > 0 ? "Completed" : "Available") : "Locked"
                         
-                        let prePct = self.preTotal > 0 ? (self.preScore * 100) / self.preTotal : 0
-                        let postPct = self.postBestTotal > 0 ? (self.postBestScore * 100) / self.postBestTotal : 0
+                        let prePct = self.preTotal > 0 ? Int((Double(self.preScore) / Double(self.preTotal) * 100.0).rounded()) : 0
+                        let postPct = self.postBestTotal > 0 ? Int((Double(self.postBestScore) / Double(self.postBestTotal) * 100.0).rounded()) : 0
                         self.improvement = postPct - prePct
                         
                         self.fetchHistory()

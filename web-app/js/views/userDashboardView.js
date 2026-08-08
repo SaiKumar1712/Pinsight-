@@ -101,7 +101,7 @@ export const UserDashboardView = {
               <span style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase;">1. FORMATIVE PRE-TEST</span>
               <div style="font-size: 32px; font-weight: 900; color: var(--navy-text); margin-top: 6px;">${isPretestDone ? `${preScore} / ${preTotal}` : 'Not Taken'}</div>
               <div style="font-size: 12px; font-weight: 800; color: ${isPretestDone ? 'var(--accent)' : 'var(--primary)'}; margin-top: 2px;">
-                ${isPretestDone ? '✓ Completed' : '⚡ Unlocked (Step 1)'}
+                ${isPretestDone ? 'Completed' : 'Unlocked (Step 1)'}
               </div>
             </div>
             
@@ -109,7 +109,7 @@ export const UserDashboardView = {
               <span style="font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase;">2. VIDEO MODULES</span>
               <div style="font-size: 32px; font-weight: 900; color: var(--navy-text); margin-top: 6px;">${videoCompleted} / ${videoTotal}</div>
               <div style="font-size: 12px; font-weight: 800; color: ${!isPretestDone ? '#999' : (isVideosDone ? 'var(--accent)' : 'var(--primary)')}; margin-top: 2px;">
-                ${!isPretestDone ? '🔒 Locked (Complete Pre-Test First)' : (isVideosDone ? '✓ 100% Watched' : '▶ In Progress (Step 2)')}
+                ${!isPretestDone ? 'Locked (Complete Pre-Test First)' : (isVideosDone ? '100% Watched' : 'In Progress (Step 2)')}
               </div>
             </div>
 
@@ -117,7 +117,7 @@ export const UserDashboardView = {
               <span style="font-size: 11px; font-weight: 800; color: rgb(255, 140, 0); text-transform: uppercase;">3. SUMMATIVE POST-TEST</span>
               <div style="font-size: 32px; font-weight: 900; color: var(--navy-text); margin-top: 6px;">${isPosttestDone ? `${postBestScore} / ${postBestTotal}` : 'Not Taken'}</div>
               <div style="font-size: 12px; font-weight: 800; color: ${(!isPretestDone || !isVideosDone) ? '#999' : 'var(--accent)'}; margin-top: 2px;">
-                ${(!isPretestDone || !isVideosDone) ? '🔒 Locked (Complete Steps 1 & 2 First)' : `Attempts: ${attemptsCount}/4`}
+                ${(!isPretestDone || !isVideosDone) ? 'Locked (Complete Steps 1 & 2 First)' : `Attempts: ${attemptsCount}/4`}
               </div>
             </div>
           </div>

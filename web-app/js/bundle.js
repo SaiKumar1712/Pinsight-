@@ -759,7 +759,7 @@
                 <span style="font-size: 11px; font-weight: 800; color: var(--primary); text-transform: uppercase;">1. FORMATIVE PRE-TEST</span>
                 <div style="font-size: 32px; font-weight: 900; color: var(--navy-text); margin-top: 6px;">${isPretestDone ? `${preScore} / ${preTotal}` : 'Not Taken'}</div>
                 <div style="font-size: 12px; font-weight: 800; color: ${isPretestDone ? 'var(--accent)' : 'var(--primary)'}; margin-top: 2px;">
-                  ${isPretestDone ? '✓ Completed' : '⚡ Unlocked (Step 1)'}
+                  ${isPretestDone ? 'Completed' : 'Unlocked (Step 1)'}
                 </div>
               </div>
               
@@ -767,7 +767,7 @@
                 <span style="font-size: 11px; font-weight: 800; color: var(--accent); text-transform: uppercase;">2. VIDEO MODULES</span>
                 <div style="font-size: 32px; font-weight: 900; color: var(--navy-text); margin-top: 6px;">${videoCompleted} / ${videoTotal}</div>
                 <div style="font-size: 12px; font-weight: 800; color: ${!isPretestDone ? '#999' : (isVideosDone ? 'var(--accent)' : 'var(--primary)')}; margin-top: 2px;">
-                  ${!isPretestDone ? '🔒 Locked (Complete Pre-Test First)' : (isVideosDone ? '✓ 100% Watched' : '▶ In Progress (Step 2)')}
+                  ${!isPretestDone ? 'Locked (Complete Pre-Test First)' : (isVideosDone ? '100% Watched' : 'In Progress (Step 2)')}
                 </div>
               </div>
 
@@ -775,7 +775,7 @@
                 <span style="font-size: 11px; font-weight: 800; color: rgb(255, 140, 0); text-transform: uppercase;">3. SUMMATIVE POST-TEST</span>
                 <div style="font-size: 32px; font-weight: 900; color: var(--navy-text); margin-top: 6px;">${isPosttestDone ? `${postBestScore} / ${postBestTotal}` : 'Not Taken'}</div>
                 <div style="font-size: 12px; font-weight: 800; color: ${(!isPretestDone || !isVideosDone) ? '#999' : 'var(--accent)'}; margin-top: 2px;">
-                  ${(!isPretestDone || !isVideosDone) ? '🔒 Locked (Complete Steps 1 & 2 First)' : `Attempts: ${attemptsCount}/4`}
+                  ${(!isPretestDone || !isVideosDone) ? 'Locked (Complete Steps 1 & 2 First)' : `Attempts: ${attemptsCount}/4`}
                 </div>
               </div>
             </div>
@@ -797,7 +797,7 @@
                     </div>
                   </div>
                   ${isPretestDone ? `
-                    <span style="padding: 6px 14px; border-radius: 20px; background: rgba(64,217,191,0.15); color: var(--accent); font-weight: 800; font-size: 12px;">✓ Completed</span>
+                    <span style="padding: 6px 14px; border-radius: 20px; background: rgba(64,217,191,0.15); color: var(--accent); font-weight: 800; font-size: 12px;">Completed</span>
                   ` : `
                     <button class="primary-btn" onclick="event.stopPropagation(); handlePreTestClick();" style="width: auto; padding: 10px 20px; font-size: 14px;">Start Pre-Test →</button>
                   `}
@@ -812,11 +812,11 @@
                     <div>
                       <span style="font-size: 10px; font-weight: 900; color: ${isPretestDone ? 'var(--accent)' : '#888'}; text-transform: uppercase;">STEP 2 • LEARNING MODULES</span>
                       <h3 style="font-size: 18px; font-weight: 800; color: var(--navy-text);">Video Lessons</h3>
-                      <p style="font-size: 13px; color: #55657e;">${!isPretestDone ? '🔒 Locked (Complete Formative Pre-Test First)' : `${videoCompleted} of ${videoTotal} modules completed`}</p>
+                      <p style="font-size: 13px; color: #55657e;">${!isPretestDone ? 'Locked (Complete Formative Pre-Test First)' : `${videoCompleted} of ${videoTotal} modules completed`}</p>
                     </div>
                   </div>
                   ${!isPretestDone ? `
-                    <button disabled class="primary-btn" style="width: auto; padding: 8px 16px; font-size: 12px; background: #eee; color: #777; box-shadow: none; cursor: not-allowed;">🔒 Locked</button>
+                    <button disabled class="primary-btn" style="width: auto; padding: 8px 16px; font-size: 12px; background: #eee; color: #777; box-shadow: none; cursor: not-allowed;">Locked</button>
                   ` : `
                     <button class="primary-btn accent-bg" onclick="event.stopPropagation(); handleVideosClick();" style="width: auto; padding: 10px 20px; font-size: 14px;">${isVideosDone ? 'Review Videos →' : 'Watch Lessons →'}</button>
                   `}
@@ -831,11 +831,11 @@
                     <div>
                       <span style="font-size: 10px; font-weight: 900; color: ${(isPretestDone && isVideosDone) ? 'rgb(255, 140, 0)' : '#888'}; text-transform: uppercase;">STEP 3 • FINAL EVALUATION</span>
                       <h3 style="font-size: 18px; font-weight: 800; color: var(--navy-text);">Summative Post-Test</h3>
-                      <p style="font-size: 13px; color: #55657e;">${(!isPretestDone || !isVideosDone) ? '🔒 Locked (Complete Pre-Test & Video Lessons First)' : (attemptsCount > 0 ? `Attempts: ${attemptsCount}/4 • Best: ${postBestScore}/${postBestTotal}` : 'Final assessment to evaluate mastery growth')}</p>
+                      <p style="font-size: 13px; color: #55657e;">${(!isPretestDone || !isVideosDone) ? 'Locked (Complete Pre-Test & Video Lessons First)' : (attemptsCount > 0 ? `Attempts: ${attemptsCount}/4 • Best: ${postBestScore}/${postBestTotal}` : 'Final assessment to evaluate mastery growth')}</p>
                     </div>
                   </div>
                   ${(!isPretestDone || !isVideosDone) ? `
-                    <button disabled class="primary-btn" style="width: auto; padding: 8px 16px; font-size: 12px; background: #eee; color: #777; box-shadow: none; cursor: not-allowed;">🔒 Locked</button>
+                    <button disabled class="primary-btn" style="width: auto; padding: 8px 16px; font-size: 12px; background: #eee; color: #777; box-shadow: none; cursor: not-allowed;">Locked</button>
                   ` : `
                     <button class="primary-btn" onclick="event.stopPropagation(); handlePostTestClick();" style="width: auto; padding: 10px 20px; font-size: 14px;">${attemptsCount > 0 ? 'Retake Post-Test →' : 'Start Post-Test →'}</button>
                   `}

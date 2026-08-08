@@ -1,0 +1,30 @@
+name: Backend Security & Performance Audit
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * *'
+
+jobs:
+  backend-test-suite:
+    name: Execute 300 Unique Backend & Security Test Cases
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_sqlite, json, ctype
+          coverage: none
+
+      - name: Run 300 Unique Automation Test Cases
+        run: |
+          php tests/backend_300_testsuite.php

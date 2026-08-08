@@ -943,8 +943,41 @@
 
       setTimeout(() => {
         const markBtn = document.getElementById('mark-complete-btn-bundle');
+        const videoEl = document.getElementById('active-video-element');
+
         if (markBtn) {
+          if (!video.is_completed) {
+            markBtn.disabled = true;
+            markBtn.innerText = 'Watch Video to Complete 🔒';
+            markBtn.style.opacity = '0.5';
+            markBtn.style.cursor = 'not-allowed';
+          } else {
+            markBtn.disabled = true;
+            markBtn.innerText = 'Completed ✓';
+            markBtn.style.opacity = '0.7';
+          }
+
+          const unlockBtn = () => {
+            if (video.is_completed) return;
+            markBtn.disabled = false;
+            markBtn.innerText = '✓ Mark Module as Completed & Continue';
+            markBtn.style.opacity = '1';
+            markBtn.style.cursor = 'pointer';
+          };
+
+          if (videoEl) {
+            videoEl.onended = unlockBtn;
+            videoEl.ontimeupdate = () => {
+              if (videoEl.duration && videoEl.currentTime >= (videoEl.duration - 1.5)) {
+                unlockBtn();
+              }
+            };
+          } else {
+            setTimeout(unlockBtn, 8000);
+          }
+
           markBtn.onclick = async () => {
+            if (markBtn.disabled) return;
             markBtn.disabled = true;
             markBtn.innerText = 'Updating...';
 
@@ -1006,7 +1039,7 @@
 
         return `
           <div style="width: 100%; border-radius: 24px; overflow: hidden; background: #000; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
-            <video controls autoplay playsinline style="width: 100%; aspect-ratio: 16 / 9; max-height: 700px; border-radius: 24px; background: #000; object-fit: contain; display: block;">
+            <video id="active-video-element" controls autoplay playsinline style="width: 100%; aspect-ratio: 16 / 9; max-height: 700px; border-radius: 24px; background: #000; object-fit: contain; display: block;">
               <source src="${mediaUrl}" type="video/mp4">
               <source src="${mediaUrl}">
               Your browser does not support HTML5 video playback.

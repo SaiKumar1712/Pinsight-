@@ -10,7 +10,9 @@ struct VideoDetailView: View {
     @State private var commentText: String = ""
     @State private var showMarkedComplete = false
     @State private var player: AVPlayer?
+    @State private var timeObserverToken: Any? = nil
     @State private var hasMarkedComplete = false
+    @State private var isVideoFinished = false
     @State private var comments: [CommentData] = [
         CommentData(user: "Admin Team", text: "Welcome to the first module! Focus on the core principles."),
         CommentData(user: "Learning Expert", text: "Great start, the visual aids are very helpful.")
@@ -42,15 +44,41 @@ struct VideoDetailView: View {
                         VideoPlayer(player: player ?? AVPlayer())
                             .frame(height: 250)
                             .onAppear {
+                                if video.is_completed {
+                                    hasMarkedComplete = true
+                                    isVideoFinished = true
+                                }
                                 if player == nil {
-                                    player = AVPlayer(url: url)
-                                    NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player?.currentItem, queue: .main) { _ in
-                                        markComplete()
+                                    let newPlayer = AVPlayer(url: url)
+                                    player = newPlayer
+                                    
+                                    NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: newPlayer.currentItem, queue: .main) { _ in
+                                        DispatchQueue.main.async {
+                                            isVideoFinished = true
+                                        }
+                                    }
+                                    
+                                    let interval = CMTime(seconds: 0.5, preferredTimescale: 600)
+                                    timeObserverToken = newPlayer.addPeriodicTimeObserver(forInterval: interval, queue: .main) { time in
+                                        if let duration = newPlayer.currentItem?.duration.seconds, duration > 0 {
+                                            let current = time.seconds
+                                            if current >= (duration - 1.5) {
+                                                DispatchQueue.main.async {
+                                                    isVideoFinished = true
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                                 player?.play()
                             }
-                            .onDisappear { player?.pause() }
+                            .onDisappear {
+                                player?.pause()
+                                if let token = timeObserverToken {
+                                    player?.removeTimeObserver(token)
+                                    timeObserverToken = nil
+                                }
+                            }
                     } else {
                         Rectangle()
                             .fill(Color.black)
@@ -134,12 +162,18 @@ struct VideoDetailView: View {
                             // Actions
                             HStack(spacing: 15) {
                                 PrimaryButton(
-                                    title: "Complete",
-                                    action: { markComplete() },
-                                    backgroundColor: Color(red: 0.35, green: 0.8, blue: 0.65) // Mint Green
+                                    title: hasMarkedComplete ? "Completed ✓" : (isVideoFinished ? "Complete" : "Watch Video to Complete 🔒"),
+                                    action: { 
+                                        if isVideoFinished {
+                                            markComplete() 
+                                        }
+                                    },
+                                    backgroundColor: (hasMarkedComplete || isVideoFinished) 
+                                        ? Color(red: 0.35, green: 0.8, blue: 0.65) 
+                                        : Color.gray.opacity(0.4)
                                 )
-                                .opacity(hasMarkedComplete ? 0.6 : 1.0)
-                                .disabled(hasMarkedComplete)
+                                .opacity((hasMarkedComplete || !isVideoFinished) ? 0.6 : 1.0)
+                                .disabled(hasMarkedComplete || !isVideoFinished)
                                 
                                 Button { dismiss() } label: {
                                     ZStack {

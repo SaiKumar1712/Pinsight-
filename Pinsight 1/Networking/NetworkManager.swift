@@ -118,27 +118,42 @@ class NetworkManager {
         thumbnailData: Data? = nil,
         completion: @escaping (Result<T, Error>) -> Void
     ) {
-        let ext = videoURL.pathExtension.isEmpty ? "mp4" : videoURL.pathExtension.lowercased()
-        let encodedTitle = title.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? title
-        let urlString = "\(baseURL)\(endpoint)?title=\(encodedTitle)&module_id=\(module_id)&ext=\(ext)"
-
-        guard let url = URL(string: urlString) else {
+        guard let url = URL(string: baseURL + endpoint) else {
             completion(.failure(NSError(domain: "InvalidURL", code: 400)))
             return
         }
 
+        let boundary = "Boundary-\(UUID().uuidString)"
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        request.setValue("application/octet-stream", forHTTPHeaderField: "Content-Type")
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         request.timeoutInterval = 600
 
-        let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest  = 600
-        config.timeoutIntervalForResource = 600
-        let session = URLSession(configuration: config)
+        var body = Data()
 
-        // ─ Stream video file directly with no intermediate copy ─
-        session.uploadTask(with: request, fromFile: videoURL) { [weak self] data, response, error in
+        func appendFormField(name: String, value: String) {
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"\(name)\"\r\n\r\n".data(using: .utf8)!)
+            body.append("\(value)\r\n".data(using: .utf8)!)
+        }
+
+        appendFormField(name: "title", value: title)
+        appendFormField(name: "module_id", value: module_id)
+        appendFormField(name: "ext", value: videoURL.pathExtension.isEmpty ? "mp4" : videoURL.pathExtension.lowercased())
+
+        if let videoData = try? Data(contentsOf: videoURL) {
+            let filename = videoURL.lastPathComponent.isEmpty ? "video.mp4" : videoURL.lastPathComponent
+            body.append("--\(boundary)\r\n".data(using: .utf8)!)
+            body.append("Content-Disposition: form-data; name=\"video\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+            body.append("Content-Type: video/mp4\r\n\r\n".data(using: .utf8)!)
+            body.append(videoData)
+            body.append("\r\n".data(using: .utf8)!)
+        }
+
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        request.httpBody = body
+
+        URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
             guard let self else { return }
             try? FileManager.default.removeItem(at: videoURL)  // cleanup temp
 
@@ -158,7 +173,6 @@ class NetworkManager {
             do {
                 let decoded = try JSONDecoder().decode(T.self, from: data)
 
-                // ─ Upload thumbnail separately (small, fast) ─
                 if let thumbData = thumbnailData,
                    let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                    let dataObj = json["data"] as? [String: Any],

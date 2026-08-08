@@ -1,14 +1,16 @@
 <?php
-@ini_set('upload_max_filesize', '500M');
-@ini_set('post_max_size', '500M');
-@ini_set('memory_limit', '512M');
-@ini_set('max_execution_time', '600');
+@ini_set('upload_max_filesize', '1000M');
+@ini_set('post_max_size', '1000M');
+@ini_set('memory_limit', '1024M');
+@ini_set('max_execution_time', '1200');
 
 require_once dirname(__DIR__) . "/config.php";
 require_once dirname(__DIR__) . "/response.php";
 
-$module_id = isset($_POST['module_id']) ? (int)$_POST['module_id'] : 1;
-$video_title = isset($_POST['title']) ? $conn->real_escape_string($_POST['title']) : '';
+$module_id = isset($_REQUEST['module_id']) ? (int)$_REQUEST['module_id'] : 1;
+$video_title = isset($_REQUEST['title']) ? $conn->real_escape_string($_REQUEST['title']) : '';
+$ext = isset($_REQUEST['ext']) ? strtolower(preg_replace('/[^a-z0-9]/i', '', $_REQUEST['ext'])) : 'mp4';
+if (empty($ext)) $ext = 'mp4';
 
 if (empty($video_title) && isset($_FILES['video']) && isset($_FILES['video']['name'])) {
     $video_title = pathinfo($_FILES['video']['name'], PATHINFO_FILENAME);
@@ -19,43 +21,62 @@ if (empty($video_title)) {
 }
 
 $db_path = '';
+$target_dir = "../uploads/videos/";
+if (!is_dir($target_dir)) {
+    @mkdir($target_dir, 0777, true);
+}
 
-if (isset($_FILES['video'])) {
-    $err = $_FILES['video']['error'];
-    if ($err === UPLOAD_ERR_OK) {
-        $video = $_FILES['video'];
-        $original = pathinfo($video['name'], PATHINFO_FILENAME);
-        $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $original);
-        $ext = strtolower(pathinfo($video['name'], PATHINFO_EXTENSION));
-        if (empty($ext)) $ext = 'mp4';
-        $filename = time() . "_" . $cleanName . "." . $ext;
+// 1. Check Multipart Form Data Upload (From Web App or iOS multipart request)
+$fileKey = null;
+if (!empty($_FILES)) {
+    if (isset($_FILES['video'])) $fileKey = 'video';
+    else if (isset($_FILES['file'])) $fileKey = 'file';
+    else if (isset($_FILES['video_file'])) $fileKey = 'video_file';
+    else {
+        $keys = array_keys($_FILES);
+        $fileKey = $keys[0];
+    }
+}
 
-        $target_dir = "../uploads/videos/";
+if ($fileKey && isset($_FILES[$fileKey]) && $_FILES[$fileKey]['error'] === UPLOAD_ERR_OK) {
+    $video = $_FILES[$fileKey];
+    $original = pathinfo($video['name'], PATHINFO_FILENAME);
+    $cleanName = preg_replace('/[^A-Za-z0-9_\-]/', '_', $original);
+    $file_ext = strtolower(pathinfo($video['name'], PATHINFO_EXTENSION));
+    if (empty($file_ext)) $file_ext = $ext;
+    $filename = time() . "_" . $cleanName . "." . $file_ext;
+    $target_file = $target_dir . $filename;
+
+    if (move_uploaded_file($video["tmp_name"], $target_file)) {
+        $db_path = "uploads/videos/" . $filename;
+    } else {
+        sendResponse(false, "Failed to save uploaded video file to target directory.", []);
+        exit;
+    }
+} 
+// 2. Check Raw Octet-Stream Payload (From iOS Swift uploadTask streaming input)
+else {
+    $rawInput = file_get_contents('php://input');
+    if (!empty($rawInput) && strlen($rawInput) > 100) {
+        $cleanTitle = preg_replace('/[^A-Za-z0-9_\-]/', '_', $video_title);
+        $filename = time() . "_" . $cleanTitle . "." . $ext;
         $target_file = $target_dir . $filename;
 
-        if (!is_dir($target_dir)) {
-            mkdir($target_dir, 0777, true);
-        }
-
-        if (move_uploaded_file($video["tmp_name"], $target_file)) {
+        if (file_put_contents($target_file, $rawInput) !== false) {
             $db_path = "uploads/videos/" . $filename;
         } else {
-            sendResponse(false, "Failed to move uploaded file to destination server directory.", []);
+            sendResponse(false, "Failed to write raw stream video data to file.", []);
             exit;
         }
     } else {
-        $msg = "File Upload Error ($err): ";
-        if ($err === UPLOAD_ERR_INI_SIZE || $err === UPLOAD_ERR_FORM_SIZE) {
-            $msg .= "File size exceeds server upload limit.";
-        } else {
-            $msg .= "Code " . $err;
+        $errCode = ($fileKey && isset($_FILES[$fileKey]['error'])) ? $_FILES[$fileKey]['error'] : -1;
+        $errMsg = "No video file was received by the server. Please select a valid MP4 file.";
+        if ($errCode === UPLOAD_ERR_INI_SIZE || $errCode === UPLOAD_ERR_FORM_SIZE) {
+            $errMsg = "File size exceeds server upload limit (upload_max_filesize). Please select a smaller file or update php.ini.";
         }
-        sendResponse(false, $msg, []);
+        sendResponse(false, $errMsg, ["error_code" => $errCode]);
         exit;
     }
-} else {
-    sendResponse(false, "No video file was received by the server. Please select a valid MP4 file.", []);
-    exit;
 }
 
 $sql = "INSERT INTO videos(module_id, video_url, title) VALUES($module_id, '$db_path', '$video_title')";

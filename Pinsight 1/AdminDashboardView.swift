@@ -51,8 +51,8 @@ struct AdminDashboardView: View {
                                 #endif
                                 showLogoutAlert = true 
                             }) {
-                                Image(systemName: "power")
-                                    .font(.system(size: 16, weight: .black))
+                                Image(systemName: "rectangle.portrait.and.arrow.right")
+                                    .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(.white)
                                     .padding(14)
                                     .background(Color(red: 0.95, green: 0.35, blue: 0.35))
